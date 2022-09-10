@@ -1,6 +1,7 @@
 package agent.agentapp.security;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,14 +41,15 @@ public class TokenUtils {
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
     // Funkcija za generisanje JWT token
-    public String generateToken(String username) {
+    public String generateToken(String username, String id, List<String> authorities) {
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
-                // .claim("key", value) //moguce je postavljanje proizvoljnih podataka u telo JWT tokena
+                .claim("id", id)
+                .claim("authorities", authorities)
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 

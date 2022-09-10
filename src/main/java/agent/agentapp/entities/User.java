@@ -39,4 +39,8 @@ public class User extends Person {
 	public boolean isEnabled() {
 		return true;
 	}
+	
+	public User(String email, String username) {
+		super(email, username);
+	}
 }
