@@ -6,10 +6,9 @@ insert into authorities (name) values ('ROLE_USER');
 insert into administrators (id, email, username, password) values (nextval('person_seq'), 'samwise@gmail.com', 'samwise', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
 -- users
 insert into users (id, email, username, password) values (nextval('person_seq'), 'gamgee@gmail.com', 'gamgee', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
+insert into users (id, email, username, password) values (nextval('person_seq'), 'frodo@gmail.com', 'frodo', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
 
-insert into user_authority (user_id, authority_id) values (1, 1);
-insert into user_authority (user_id, authority_id) values (2, 3);
-
+insert into user_authority (user_id, authority_id) values (1, 1), (2, 3), (3, 3);
 
 insert into skills (name, type) values ('C', 0), ('C++', 0), ('C#', 0), ('Java', 0), ('JavaScript', 0), ('Ruby', 0), ('PHP', 0), ('HTML', 0), ('CSS', 0), ('Kotlin', 0), ('Python', 0), ('Go', 0), ('Pharo', 0), ('GML', 0), ('Lua', 0), ('Swift', 0), ('Dart', 0), ('Matlab', 0), ('R', 0), ('Bash', 0), ('SQL', 0), ('NodeJS', 1), ('Laravel', 1), ('Angular', 1), ('Vue', 1), ('Django', 1), ('Unity', 1), ('GM Studio', 1), ('LWJGL', 1), ('React', 1), ('Flutter', 1), ('JUnit', 1), ('Jasmine', 1), ('Selenium', 1), ('Ruby On Rails', 1), ('Maven', 1), ('Spring Boot', 1), ('Spring', 1), ('Pandas', 1), ('Numpy', 1), ('Tensorflow', 1), ('Keras', 1), ('Trello', 1), ('Jira', 1), ('Travis-CI', 1), ('Heroku', 1), ('SonarQube', 1), ('SonarCloud', 1), ('Git', 1), ('Amazon AWS', 1), ('MS Azure', 1), ('Agile methodology', 2), ('SQL Databases', 2), ('Network communication', 2), ('NoSQL Databases', 2), ('Network management', 2), ('Troubleshooting skills', 2), ('Software virtualization', 2), ('Network protocols', 2), ('REST', 2), ('Web security', 2), ('Cloud technologies', 2), ('Testing metodologies', 2), ('Object oriented programming', 2), ('Functional programming', 2), ('Design patterns', 2), ('CS algorithms', 2), ('ES6 specification', 2), ('Neural networks', 2), ('Machine learning algorithms', 2), ('SCRUM', 2), ('English', 3), ('German', 3), ('Dutch', 3), ('Spanish', 3), ('Italian', 3), ('Communication', 4), ('Self motivation', 4), ('Leadership', 4), ('Responsibility', 4), ('Teamwork', 4), ('Problem solving', 4), ('Working under pressure', 4), ('Time management', 4), ('Flexibility', 4), ('Negotiation', 4);
 
