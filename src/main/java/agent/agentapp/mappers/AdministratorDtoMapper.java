@@ -12,4 +12,9 @@ public class AdministratorDtoMapper {
 		return new PersonDto(administrator.getId(), administrator.getUsername(), administrator.getEmail(),
 				administrator.getAuthorities().get(0).getAuthority());
 	}
+	
+	public PersonDto toDtoWithToken(Administrator administrator, String token) {
+		return new PersonDto(administrator.getId(), administrator.getUsername(), administrator.getEmail(),
+				administrator.getAuthorities().get(0).getAuthority(), token);
+    }
 }
