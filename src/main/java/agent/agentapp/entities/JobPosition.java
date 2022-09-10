@@ -29,5 +29,8 @@ public class JobPosition {
 	
 	@OneToMany(mappedBy = "jobPosition")
 	private List<Salary> salaries;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Company company;
 
 }

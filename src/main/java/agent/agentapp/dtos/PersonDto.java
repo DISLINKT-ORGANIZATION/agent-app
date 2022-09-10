@@ -13,5 +13,15 @@ public class PersonDto {
 	private String username;
 	private String email;
 	private String role;
+	// when username changes
+	private String token;
+
+	public PersonDto(Long id, String username, String email, String role) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.role = role;
+	}
 
 }
