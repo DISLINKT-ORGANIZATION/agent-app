@@ -1,17 +1,23 @@
-insert into authorities (name) values ('ROLE_ADMINISTRATOR');
-insert into authorities (name) values ('ROLE_AGENT');
-insert into authorities (name) values ('ROLE_USER');
+insert into authorities (name) values ('ROLE_ADMINISTRATOR'), ('ROLE_AGENT'), ('ROLE_USER');
 
--- admins
 insert into administrators (id, email, username, password) values (nextval('person_seq'), 'samwise@gmail.com', 'samwise', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
--- users
-insert into users (id, email, username, password) values (nextval('person_seq'), 'gamgee@gmail.com', 'gamgee', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
-insert into users (id, email, username, password) values (nextval('person_seq'), 'frodo@gmail.com', 'frodo', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
 
-insert into user_authority (user_id, authority_id) values (1, 1), (2, 3), (3, 3);
+insert into users (id, email, username, password) values (nextval('person_seq'), 'gamgee@gmail.com', 'gamgee', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK'), (nextval('person_seq'), 'frodo@gmail.com', 'frodo', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK'), (nextval('person_seq'), 'johnatan@gmail.com', 'stoned-johnny', '$2y$12$NFN7DJUX1lFfaDX1tc9/6uBtgls9SZOU9iwjhrlXJc0xr471vgKAK');
+
+insert into user_authority (user_id, authority_id) values (1, 1), (2, 3), (3, 3), (4, 2);
 
 insert into skills (name, type) values ('C', 0), ('C++', 0), ('C#', 0), ('Java', 0), ('JavaScript', 0), ('Ruby', 0), ('PHP', 0), ('HTML', 0), ('CSS', 0), ('Kotlin', 0), ('Python', 0), ('Go', 0), ('Pharo', 0), ('GML', 0), ('Lua', 0), ('Swift', 0), ('Dart', 0), ('Matlab', 0), ('R', 0), ('Bash', 0), ('SQL', 0), ('NodeJS', 1), ('Laravel', 1), ('Angular', 1), ('Vue', 1), ('Django', 1), ('Unity', 1), ('GM Studio', 1), ('LWJGL', 1), ('React', 1), ('Flutter', 1), ('JUnit', 1), ('Jasmine', 1), ('Selenium', 1), ('Ruby On Rails', 1), ('Maven', 1), ('Spring Boot', 1), ('Spring', 1), ('Pandas', 1), ('Numpy', 1), ('Tensorflow', 1), ('Keras', 1), ('Trello', 1), ('Jira', 1), ('Travis-CI', 1), ('Heroku', 1), ('SonarQube', 1), ('SonarCloud', 1), ('Git', 1), ('Amazon AWS', 1), ('MS Azure', 1), ('Agile methodology', 2), ('SQL Databases', 2), ('Network communication', 2), ('NoSQL Databases', 2), ('Network management', 2), ('Troubleshooting skills', 2), ('Software virtualization', 2), ('Network protocols', 2), ('REST', 2), ('Web security', 2), ('Cloud technologies', 2), ('Testing metodologies', 2), ('Object oriented programming', 2), ('Functional programming', 2), ('Design patterns', 2), ('CS algorithms', 2), ('ES6 specification', 2), ('Neural networks', 2), ('Machine learning algorithms', 2), ('SCRUM', 2), ('English', 3), ('German', 3), ('Dutch', 3), ('Spanish', 3), ('Italian', 3), ('Communication', 4), ('Self motivation', 4), ('Leadership', 4), ('Responsibility', 4), ('Teamwork', 4), ('Problem solving', 4), ('Working under pressure', 4), ('Time management', 4), ('Flexibility', 4), ('Negotiation', 4);
 
 insert into job_positions (title) values ('Backend Developer'), ('Frontend Developer'), ('FullStack Developer'), ('Data Scientist'), ('Game Developer'), ('Mobile Application Developer'), ('Computer System Analyst'), ('Computer System Engineer'), ('Network System Administrator'), ('Database Administrator'), ('Artificial Intelligence Specialist'), ('Bioinformatics Software Engineer'), ('Computer Forensics Investigator'), ('Cybersecurity Strategist'), ('Data Architect'), ('Electronics Engineer'), ('Game Tester'), ('Lead Software Engineer'), ('Security Administrator'), ('SEO Analyst'), ('Software Architect'), ('Software Tester'), ('Statistical Programmer'), ('Telecommunications Engineer'), ('Telecommunications Specialist');
 
 insert into job_positions_skills (job_position_id, skills_id) values (1, 4), (1, 5), (1, 6), (1, 11), (2, 5), (2, 7), (2, 8), (2, 9), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 11), (4, 11), (4, 18), (4, 19), (5, 2), (5, 3), (5, 5), (5, 14), (6, 3), (6, 5), (6, 10), (6, 11), (6, 16), (9, 20), (22, 1), (22, 2), (22, 3), (22, 4), (22, 5), (22, 6), (22, 7), (22, 11), (1, 22), (1, 23), (1, 26), (1, 35), (1, 36), (1, 37), (1, 38), (1, 49), (2, 22), (2, 23), (2, 24), (2, 25), (2, 30), (2, 49), (3, 22), (3, 23), (3, 24), (3, 25), (3, 26), (3, 35), (3, 36), (3, 37), (3, 38), (3, 49), (4, 39), (4, 40), (4, 41), (4, 42), (4, 49), (5, 27), (5, 28), (5, 29), (5, 49), (6, 30), (6, 31), (6, 49), (9, 45), (9, 46), (9, 47), (9, 48), (9, 49), (9, 50), (9, 51), (22, 32), (22, 33), (22, 34), (22, 49), (1, 52), (1, 53), (1, 57), (1, 60), (1, 64), (1, 66), (2, 52), (2, 57), (2, 60), (2, 64), (2, 66), (2, 68), (3, 52), (3, 53), (3, 57), (3, 60), (3, 64), (3, 66), (3, 68), (4, 57), (4, 69), (4, 70), (5, 52), (5, 55), (5, 56), (5, 57), (5, 61), (5, 62), (6, 52), (6, 53), (6, 55), (6, 56), (6, 64), (6, 66), (9, 54), (9, 56), (9, 57), (9, 58), (9, 59), (9, 61), (22, 57), (22, 63);
+
+insert into companies (user_id, name, description) values (4, 'Microsoft', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero dolor, faucibus id imperdiet gravida, sollicitudin in ligula. Vestibulum fringilla nisl at cursus tristique.');
+
+insert into comments (user_id, company_id, content) values (2, 1, 'Cool company!'), (3, 1, 'I worked here for 5 years and I would recommend this company to everyone.');
+
+insert into reviews (user_id, company_id, review_value) values (2, 1, 3), (3, 1, 5);
+
+insert into salaries (user_id, job_position_id, seniority_level, salary_value) values (2, 1, 0, 1000), (3, 1, 2, 2000);
+
+insert into selection_processes (user_id, company_id, description) values (2, 1, 'The selection process consisted of 3 parts: HR interview, technical interview and a task. The hardest part for me was the task because they didn''t give me enough time to finish it and I had to use C++, which I am not proficient in.');

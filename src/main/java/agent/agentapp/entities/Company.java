@@ -45,9 +45,6 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<SelectionProcess> selectionProcesses;
 
-	@OneToMany(mappedBy = "company")
-	private List<JobPosition> jobPositions;
-
 	@OneToOne
 	private User user;
 
@@ -58,7 +55,12 @@ public class Company {
 		this.comments = new ArrayList<Comment>();
 		this.reviews = new ArrayList<Review>();
 		this.selectionProcesses = new ArrayList<SelectionProcess>();
-		this.jobPositions = new ArrayList<JobPosition>();
+	}
+	
+	public double calculateAverageReview() {
+		double average = this.reviews.stream().mapToInt(review -> review.getReviewValue()).average().orElse(0);
+		System.out.println(">> AVERAGE REVIEW:" + average);
+		return average;
 	}
 
 }
