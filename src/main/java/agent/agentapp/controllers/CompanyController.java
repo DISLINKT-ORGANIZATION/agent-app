@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import agent.agentapp.dtos.CommentDto;
 import agent.agentapp.dtos.CompanyDto;
 import agent.agentapp.dtos.CreateRegisterCompanyRequestDto;
 import agent.agentapp.dtos.PasswordDto;
 import agent.agentapp.dtos.RegisterCompanyRequestDto;
+import agent.agentapp.dtos.ReviewDto;
+import agent.agentapp.dtos.SelectionProcessDto;
 import agent.agentapp.dtos.UpdateCompanyDto;
 import agent.agentapp.services.CompanyService;
 
@@ -29,15 +32,21 @@ public class CompanyController {
 
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/request-registration")
-	public ResponseEntity<?> updatePerson(@RequestBody CreateRegisterCompanyRequestDto registerCompanyRequest) {
+	public ResponseEntity<?> requestRegistration(@RequestBody CreateRegisterCompanyRequestDto registerCompanyRequest) {
 		RegisterCompanyRequestDto dto = companyService.requestRegistration(registerCompanyRequest);
 		return ResponseEntity.ok(dto);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMINISTRATOR', 'ROLE_AGENT', 'ROLE_USER')")
 	@GetMapping("/{companyId}")
 	public ResponseEntity<?> getCompany(@PathVariable Long companyId) {
 		CompanyDto dto = companyService.getCompany(companyId);
+		return ResponseEntity.ok(dto);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_AGENT')")
+	@GetMapping("/by-agent/{userId}")
+	public ResponseEntity<?> getCompanyByAgent(@PathVariable Long userId) {
+		CompanyDto dto = companyService.getCompanyByAgent(userId);
 		return ResponseEntity.ok(dto);
 	}
 
@@ -75,11 +84,32 @@ public class CompanyController {
 		RegisterCompanyRequestDto dto = companyService.getApprovedRequestForUser(userId);
 		return ResponseEntity.ok(dto);
 	}
-	
+
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/register-company")
 	public ResponseEntity<?> registerCompany(@RequestBody PasswordDto passwordDto) {
 		CompanyDto dto = companyService.registerCompany(passwordDto);
+		return ResponseEntity.ok(dto);
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/review")
+	public ResponseEntity<?> review(@RequestBody ReviewDto reviewDto) {
+		ReviewDto dto = companyService.addReview(reviewDto);
+		return ResponseEntity.ok(dto);
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/comment")
+	public ResponseEntity<?> comment(@RequestBody CommentDto commentDto) {
+		CommentDto dto = companyService.addComment(commentDto);
+		return ResponseEntity.ok(dto);
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/selection-process")
+	public ResponseEntity<?> selectionProcess(@RequestBody SelectionProcessDto selectionProcessDto) {
+		SelectionProcessDto dto = companyService.addSelectionProcess(selectionProcessDto);
 		return ResponseEntity.ok(dto);
 	}
 
