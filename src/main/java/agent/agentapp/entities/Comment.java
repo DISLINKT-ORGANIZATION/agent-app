@@ -11,13 +11,13 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "comments")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Comment {
 
 	@Id
@@ -34,4 +34,10 @@ public class Comment {
 	
 	@ManyToOne
 	private Company company;
+
+	public Comment(@NonNull Long userId, @NonNull String content) {
+		super();
+		this.userId = userId;
+		this.content = content;
+	}
 }

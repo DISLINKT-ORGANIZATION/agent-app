@@ -34,4 +34,11 @@ public class Review {
 	@ManyToOne
 	private Company company;
 
+	public Review(@NonNull Long userId, int reviewValue, Company company) {
+		super();
+		this.userId = userId;
+		this.reviewValue = reviewValue;
+		this.company = company;
+	}
+
 }

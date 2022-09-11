@@ -11,13 +11,13 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "selection_processes")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SelectionProcess {
 	
 	@Id
@@ -34,5 +34,12 @@ public class SelectionProcess {
 	
 	@ManyToOne
 	private Company company;
+
+	public SelectionProcess(@NonNull Long userId, @NonNull String description) {
+		super();
+		this.userId = userId;
+		this.description = description;
+	}
+	
 
 }

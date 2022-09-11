@@ -19,19 +19,29 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Salary {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "user_id", unique = false, nullable = false)
 	@NonNull
 	private Long userId;
 
 	@Column(name = "salary_value", unique = false, nullable = false)
 	private int salaryValue;
-	
+
+	@Column(name = "seniority_level", unique = false, nullable = false)
+	private SeniorityLevel senioriyLevel;
+
 	@ManyToOne
 	private JobPosition jobPosition;
+
+	public Salary(@NonNull Long userId, int salaryValue, SeniorityLevel senioriyLevel) {
+		super();
+		this.userId = userId;
+		this.salaryValue = salaryValue;
+		this.senioriyLevel = senioriyLevel;
+	}
 
 }
