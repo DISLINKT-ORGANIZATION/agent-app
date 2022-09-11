@@ -42,5 +42,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	public ResponseEntity<Object> handleRequestAlreadyExists(HttpServletResponse response) throws IOException {
 		return new ResponseEntity<>("Request already exists.", HttpStatus.CONFLICT);
 	}
+	
+	@ExceptionHandler(ServerException.class)
+	public ResponseEntity<Object> handleServerException(HttpServletResponse response) throws IOException {
+		return new ResponseEntity<>("Service is unavailable. Please create new company registration request.", HttpStatus.SERVICE_UNAVAILABLE);
+	}
 
 }
