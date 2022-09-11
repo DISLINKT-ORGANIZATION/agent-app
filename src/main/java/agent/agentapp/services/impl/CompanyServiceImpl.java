@@ -33,6 +33,7 @@ import agent.agentapp.entities.User;
 import agent.agentapp.exceptions.EmailAlreadyExists;
 import agent.agentapp.exceptions.EntityNotFound;
 import agent.agentapp.exceptions.RequestAlreadyExists;
+import agent.agentapp.exceptions.ServerException;
 import agent.agentapp.exceptions.UsernameAlreadyExists;
 import agent.agentapp.exceptions.UsernameOrEmailAlreadyExists;
 import agent.agentapp.mappers.CommentMapper;
@@ -76,10 +77,10 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private CommentRepository commentRepository;
-	
+
 	@Autowired
 	private SelectionProcessRepository selectionProcessRepository;
-	
+
 	@Autowired
 	private RegisterCompanyRequestMapper registerCompanyRequestMapper;
 
@@ -88,32 +89,36 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private ReviewMapper reviewMapper;
-	
+
 	@Autowired
 	private CommentMapper commentMapper;
-	
+
 	@Autowired
 	private SelectionProcessMapper selectionProcessMapper;
 
 	public CompanyDto getCompany(Long companyId) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		User currentUser = (User) authentication.getPrincipal();
 		Optional<Company> companyOptional = companyRepository.findById(companyId);
 		if (companyOptional.isEmpty()) {
 			throw new EntityNotFound("Company not found.");
 		}
 		Company company = companyOptional.get();
 		CompanyDto dto = companyMapper.toDtoWithLists(company, company.getUser());
-		if (currentUser != null && currentUser.getAuthorities().get(0).getName().equals("ROLE_USER")) {
-			Optional<Review> currentUserReview = reviewRepository.findByUserIdAndCompanyId(currentUser.getId(),
-					company.getId());
-			if (currentUserReview.isPresent()) {
-				dto.setCurrentUserReview(reviewMapper.toDto(currentUserReview.get()));
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication.getPrincipal() instanceof User) {
+			User currentUser = (User) authentication.getPrincipal();
+			if (currentUser != null && currentUser.getAuthorities().get(0).getName().equals("ROLE_USER")) {
+				Optional<Review> currentUserReview = reviewRepository.findByUserIdAndCompanyId(currentUser.getId(),
+						company.getId());
+				if (currentUserReview.isPresent()) {
+					dto.setCurrentUserReview(reviewMapper.toDto(currentUserReview.get()));
+				}
 			}
 		}
+
 		return dto;
 	}
-	
+
 	public CompanyDto getCompanyByAgent(Long userId) {
 		Optional<Company> companyOptional = companyRepository.findByUserId(userId);
 		if (companyOptional.isEmpty()) {
@@ -232,6 +237,10 @@ public class CompanyServiceImpl implements CompanyService {
 			registerCompanyRequestRepository.delete(request);
 			throw new UsernameOrEmailAlreadyExists(
 					"Your username or email already exists on dislinkt application. Please change it and create new company registration request.");
+		}
+		if (!createAgentResponse.getStatusCode().equals(HttpStatus.OK)) {
+			registerCompanyRequestRepository.delete(request);
+			throw new ServerException("Service is unavailable. Please create new company registration request.");
 		}
 
 		// delete request
