@@ -16,7 +16,7 @@ insert into companies (user_id, name, description) values (4, 'Microsoft', 'Lore
 
 insert into comments (user_id, company_id, content) values (2, 1, 'Cool company!'), (3, 1, 'I worked here for 5 years and I would recommend this company to everyone.');
 
-insert into reviews (user_id, company_id, review_value) values (2, 1, 3), (3, 1, 5);
+insert into reviews (user_id, company_id, review_value) values (3, 1, 5), (2, 1, 4);
 
 insert into salaries (user_id, job_position_id, seniority_level, salary_value) values (2, 1, 0, 1000), (3, 1, 2, 2000);
 

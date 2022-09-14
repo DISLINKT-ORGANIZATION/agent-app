@@ -10,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +22,7 @@ import agent.agentapp.dtos.SalaryDto;
 import agent.agentapp.entities.Company;
 import agent.agentapp.entities.JobPosition;
 import agent.agentapp.entities.Salary;
+import agent.agentapp.entities.User;
 import agent.agentapp.exceptions.EntityNotFound;
 import agent.agentapp.exceptions.ServerException;
 import agent.agentapp.mappers.JobPositionMapper;
@@ -95,6 +98,10 @@ public class JobPositionServiceImpl implements JobPositionService {
 
 		JobOfferDto jobOffer = new JobOfferDto(jobOfferDto.getTitle(), jobOfferDto.getDescription(), jobPositionName,
 				companyName, jobOfferDto.getSeniorityLevel(), jobPositionLink, companyLink);
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		jobOffer.setUsername(user.getUsername());
 
 		RestTemplate restTemplate = new RestTemplate();
 		String createJobOfferUrl = jobOfferServiceApi + "/job-offer";
