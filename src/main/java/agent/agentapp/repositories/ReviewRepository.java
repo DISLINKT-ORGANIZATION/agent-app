@@ -13,7 +13,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	
 	Optional<Review> findById(Long id);
 	
-	@Query("SELECT r FROM Review r WHERE r.id = ?1 AND r.company.id = ?2")
-	Optional<Review> findByUserIdAndCompanyId(Long userId, Long companyId);
+	@Query("SELECT r FROM Review r WHERE r.userId = ?1 AND r.company.id = ?2")
+	Review findByUserIdAndCompanyId(Long userId, Long companyId);
 
 }
