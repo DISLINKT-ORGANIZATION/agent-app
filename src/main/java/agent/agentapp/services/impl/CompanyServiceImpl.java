@@ -108,10 +108,10 @@ public class CompanyServiceImpl implements CompanyService {
 		if (authentication.getPrincipal() instanceof User) {
 			User currentUser = (User) authentication.getPrincipal();
 			if (currentUser != null && currentUser.getAuthorities().get(0).getName().equals("ROLE_USER")) {
-				Optional<Review> currentUserReview = reviewRepository.findByUserIdAndCompanyId(currentUser.getId(),
+				Review currentUserReview = reviewRepository.findByUserIdAndCompanyId(currentUser.getId(),
 						company.getId());
-				if (currentUserReview.isPresent()) {
-					dto.setCurrentUserReview(reviewMapper.toDto(currentUserReview.get()));
+				if (currentUserReview != null) {
+					dto.setCurrentUserReview(reviewMapper.toDto(currentUserReview));
 				}
 			}
 		}
@@ -256,10 +256,10 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		Company company = companyOptional.get();
 		Review review = null;
-		Optional<Review> currentUserReview = reviewRepository.findByUserIdAndCompanyId(dto.getUserId(),
+		Review currentUserReview = reviewRepository.findByUserIdAndCompanyId(dto.getUserId(),
 				company.getId());
-		if (currentUserReview.isPresent()) {
-			review = currentUserReview.get();
+		if (currentUserReview != null) {
+			review = currentUserReview;
 			review.setReviewValue(dto.getReviewValue());
 		} else {
 			review = reviewMapper.toEntity(dto, company);

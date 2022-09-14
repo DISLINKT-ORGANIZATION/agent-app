@@ -12,6 +12,7 @@ public class JobOfferDto {
 	private Long id;
 	private String title;
 	private String description;
+	private String username;
 	private String jobPositionName;
 	private String companyName;
 	private int seniorityLevel;
