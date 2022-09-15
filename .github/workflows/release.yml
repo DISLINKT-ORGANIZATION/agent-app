@@ -73,7 +73,7 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN = ${{ secrets.GITHUB_TOKEN }}
           builder: ${{ steps.buildx.outputs.name }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest}
+          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
           load: true
 
       - name: Docker push
@@ -84,7 +84,7 @@ jobs:
           push: true
           secrets: |
             GIT_AUTH_TOKEN = ${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest}
+          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
 
       - name: Upload image
         uses: ishworkh/docker-image-artifact-upload@v1
