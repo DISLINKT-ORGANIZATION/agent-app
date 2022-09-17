@@ -1,0 +1,56 @@
+services:
+  init:
+    image: danijelradakovic/heroku-terraform:latest
+    networks:
+      - deployment
+    env_file:
+      - env.conf
+    volumes:
+      - ./scripts:/deployment/frontend/scripts
+    working_dir: /deployment/frontend
+    entrypoint: sh
+    command: [ "scripts/init.sh" ]
+
+  deploy:
+    image: danijelradakovic/heroku-terraform:latest
+    networks:
+      - deployment
+    env_file:
+      - env.conf
+    volumes:
+      - ./scripts:/deployment/frontend/scripts
+      - ./terraform:/deployment/frontend/terraform
+    working_dir: /deployment/frontend
+    entrypoint: sh
+    command: [ "scripts/deploy.sh" ]
+
+  destroy:
+    image: danijelradakovic/heroku-terraform:latest
+    networks:
+      - deployment
+    env_file:
+      - env.conf
+    volumes:
+      - ./scripts:/deployment/frontend/scripts
+      - ./terraform:/deployment/frontend/terraform
+    working_dir: /deployment/frontend
+    entrypoint: sh
+    command: [ "scripts/destroy.sh" ]
+
+  cleanup:
+    image: danijelradakovic/heroku-terraform:latest
+    networks:
+      - deployment
+    env_file:
+      - env.conf
+    volumes:
+      - ./scripts:/deployment/frontend/scripts
+      - ./terraform:/deployment/frontend/terraform
+    working_dir: /deployment/frontend
+    entrypoint: sh
+    command: [ "scripts/cleanup.sh" ]
+
+
+networks:
+  deployment:
+    name: deployment
