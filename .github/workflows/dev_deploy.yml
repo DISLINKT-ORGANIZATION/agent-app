@@ -1,8 +1,8 @@
-name: Release
+name: DevDeploy
 
 on:
   push:
-    branches: [main]
+    branches: [develop]
 
 jobs:
   ci:
@@ -11,7 +11,7 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-  release:
+  dev_deploy:
     needs: ci
     runs-on: ubuntu-latest
     steps:
@@ -19,27 +19,16 @@ jobs:
         with:
           fetch-depth: 0
       - run: git checkout HEAD^
-
-      - name: Create a Github Release
-        id: release
-        uses: rymndhng/release-on-push-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create semantic version
+        id: semantic-version
+        uses: paulhatch/semantic-version@v4.0.2
         with:
-          bump_version_scheme: minor
-          tag_prefix: v
-          release_name: "Release <RELEASE_VERSION>"
-
-      - name: Check Output Parameters
-        run: |
-          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-          echo "Got release version ${{ steps.release.outputs.version }}"
-
-      - name: Split version
-        id: clean_version
-        uses: jungwinter/split@v2
-        with:
-          msg: ${{steps.release.outputs.version}}
+          tag_prefix: "v"
+          major_pattern: "(MAJOR)"
+          minor_pattern: "(MINOR)"
+          format: "${major}.${minor}.${patch}"
+          bump_each_commit: true
 
       - name: Cache Maven Packages
         uses: actions/cache@v1
@@ -49,7 +38,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build with Maven
-        run: mvn package -DskipTests
+        run: mvn package --file pom.xml -DskipTests
 
       - name: Set Up QEMU
         uses: docker/setup-qemu-action@v2
@@ -73,7 +62,7 @@ jobs:
           secrets: |
             GIT_AUTH_TOKEN = ${{ secrets.GITHUB_TOKEN }}
           builder: ${{ steps.buildx.outputs.name }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.semantic-version.outputs.version }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
           load: true
 
       - name: Docker push
@@ -84,36 +73,36 @@ jobs:
           push: true
           secrets: |
             GIT_AUTH_TOKEN = ${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.semantic-version.outputs.version }}, ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
 
       - name: Upload image
         uses: ishworkh/docker-image-artifact-upload@v1
         with:
-          image: ${{ secrets.DOCKER_USERNAME }}/agent-app:${{ steps.clean_version.outputs._1 }}
+          image: ${{ secrets.DOCKER_USERNAME }}/agent-app:latest
 
       - name: Upload Jar Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: agent-app-build-${{ steps.clean_version.outputs._1 }}.jar
+          name: agent-app-build-${{ steps.semantic-version.outputs.version }}.jar
           path: target/*.jar
-          
-      - name: Deploy to PROD environment
-        if: github.event_name == 'push' && github.ref_name == 'main'
+      
+      - name: Deploy to DEV environment
+        if: github.event_name == 'push' && github.ref_name == 'develop'
         run: |
           cd ./deployment/frontend
-          echo "TERRAFORM_BACKEND=grumpy-dislinkt-backend" > env.conf
-          echo "APP_NAME=grumpy-dislinkt-api" >> env.conf
-          echo "GATEWAY_NAME=grumpy-dislinkt" >> env.conf
-          printf "HEROKU_EMAIL=%s\n" ${{ secrets.HEROKU_EMAIL }} >> env.conf
-          printf "HEROKU_API_KEY=%s" ${{ secrets.HEROKU_API_KEY }} >> env.conf
+          echo "TERRAFORM_BACKEND=grumpy-dislinkt-backend-dev" > env.conf
+          echo "APP_NAME=grumpy-dislinkt-api-dev" >> env.conf
+          echo "GATEWAY_NAME=grumpy-dislinkt-dev" >> env.conf
+          printf "HEROKU_EMAIL=%s\n" ${{ secrets.HEROKU_EMAIL_DEV }} >> env.conf
+          printf "HEROKU_API_KEY=%s" ${{ secrets.HEROKU_API_KEY_DEV }} >> env.conf
           head -5 env.conf
           docker compose up destroy
           cd ../../deployment/backend
-          echo "TERRAFORM_BACKEND=grumpy-dislinkt-backend" > env.conf
-          echo "APP_NAME=grumpy-dislinkt-api" >> env.conf
-          echo "GATEWAY_NAME=grumpy-dislinkt" >> env.conf
-          printf "HEROKU_EMAIL=%s\n" ${{ secrets.HEROKU_EMAIL }} >> env.conf
-          printf "HEROKU_API_KEY=%s" ${{ secrets.HEROKU_API_KEY }} >> env.conf
+          echo "TERRAFORM_BACKEND=grumpy-dislinkt-backend-dev" > env.conf
+          echo "APP_NAME=grumpy-dislinkt-api-dev" >> env.conf
+          echo "GATEWAY_NAME=grumpy-dislinkt-dev" >> env.conf
+          printf "HEROKU_EMAIL=%s\n" ${{ secrets.HEROKU_EMAIL_DEV }} >> env.conf
+          printf "HEROKU_API_KEY=%s" ${{ secrets.HEROKU_API_KEY_DEV }} >> env.conf
           head -5 env.conf
           docker compose up deploy
           docker compose up deploy
