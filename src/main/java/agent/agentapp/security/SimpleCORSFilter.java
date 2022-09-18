@@ -33,7 +33,7 @@ public class SimpleCORSFilter implements Filter {
         System.out.println(request.getHeader("Origin"));
 
         // dodati gateway, dislinkt i agentsku
-        String[] origins = {corsOrigin};
+        String[] origins = {corsOrigin, "http://localhost:8081", "http://localhost:8084", "http://localhost:8081/job-offer-service"};
         for (String s : origins) {
             if (request.getHeader("Origin") != null) {
                 if (s.equals(request.getHeader("Origin"))) {
