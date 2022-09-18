@@ -109,6 +109,7 @@ public class JobPositionServiceImpl implements JobPositionService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.set("Authorization", token);
+		System.out.println(token);
 		HttpEntity<JobOfferDto> entity = new HttpEntity<JobOfferDto>(jobOffer, headers);
 		ResponseEntity<JobOfferDto> createJobOfferResponse = restTemplate.postForEntity(createJobOfferUrl, entity,
 				JobOfferDto.class);
